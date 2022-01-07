@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Kazetenn Pages Bundle
+ * This file is part of the Kazetenn Articles Bundle
  *
  * (c) Gwilherm-Alan Turpin (elvandar.ysalys@protonmail.com) 2022.
  *
@@ -11,7 +11,7 @@ namespace Kazetenn\Articles\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Kazetenn\Pages\Entity\ArticleContent;
+use Kazetenn\Articles\Entity\ArticleContent;
 
 /**
  * @method ArticleContent|null find($id, $lockMode = null, $lockVersion = null)

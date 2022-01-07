@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Kazetenn Pages Bundle
+ * This file is part of the Kazetenn Articles Bundle
  *
  * (c) Gwilherm-Alan Turpin (elvandar.ysalys@protonmail.com) 2022.
  *
@@ -14,7 +14,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Kazetenn\Articles\Repository\ArticleRepository;
-use Kazetenn\Pages\Entity\ArticleContent;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Uid\UuidV4;
 
@@ -23,9 +22,10 @@ use Symfony\Component\Uid\UuidV4;
  */
 class Article
 {
-    const PAGE_TEMPLATE = '@Kazetenn/article/_block_content_display.twig'; // todo: do something about this
+    const ARTICLE_TEMPLATE = '@Kazetenn/article/_block_content_display.twig'; // todo: do something about this
 
     use TimestampableEntity;
+
 //    use BlameableEntity;
 
     /**
@@ -36,13 +36,13 @@ class Article
 
     /**
      * @var Article[]
-     * @ORM\OneToMany(targetEntity="Kazetenn\Entity\Article", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="Kazetenn\Articles\Entity\Article", mappedBy="parent")
      */
     private $children;
 
     /**
      * @var Article|null
-     * @ORM\ManyToOne(targetEntity="Kazetenn\Entity\Article", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Kazetenn\Articles\Entity\Article", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
      */
     private Article $parent;
@@ -61,10 +61,10 @@ class Article
 
     /**
      * @var ArticleContent[]
-     * @ORM\OneToMany(targetEntity="Kazetenn\Entity\ArticleContent", mappedBy="article")
+     * @ORM\OneToMany(targetEntity="Kazetenn\Articles\Entity\ArticleContent", mappedBy="article")
      * @ORM\OrderBy({"blocOrder" = "asc"})
      */
-    private $pageContents;
+    private $articleContents;
 
     /**
      * @var string|null
@@ -72,60 +72,68 @@ class Article
      */
     private ?string $template;
 
+    /**
+     * @var Category[]
+     * @ORM\ManyToMany(targetEntity="Kazetenn\Articles\Entity\Category", inversedBy="articles")
+     * @ORM\JoinTable(name="article_categories")
+     */
+    private $categories;
+
     public function __construct()
     {
-        $this->children = new ArrayCollection();
-        $this->pageContents = new ArrayCollection();
+        $this->children        = new ArrayCollection();
+        $this->articleContents = new ArrayCollection();
+        $this->categories      = new ArrayCollection();
 
         if (null === $this->id) {
             $this->id = Uuid::v4();
         }
 
-        if (null === $this->template){
-            $this->template = self::PAGE_TEMPLATE;
+        if (null === $this->template) {
+            $this->template = self::ARTICLE_TEMPLATE;
         }
     }
 
     /**
      * @return Collection|ArticleContent[]
      */
-    public function getPageContents(): Collection
+    public function getArticleContents(): Collection
     {
-        return $this->pageContents;
+        return $this->articleContents;
     }
 
     /**
      * @return ArticleContent[]
      */
-    public function getPageContentsOrdered(): array
+    public function getArticleContentsOrdered(): array
     {
-        $data = $this->pageContents;
+        $data = $this->articleContents;
 
         $return = [];
-        foreach ($data as $datum){
-            if($datum->getParent() === null) {
+        foreach ($data as $datum) {
+            if ($datum->getParent() === null) {
                 $return[$datum->getBlocOrder()][] = $datum;
             }
         }
         return $return;
     }
 
-    public function addPageContent(ArticleContent $pageContent): self
+    public function addArticleContent(ArticleContent $articleContent): self
     {
-        if (!$this->pageContents->contains($pageContent)) {
-            $this->pageContents[] = $pageContent;
-            $pageContent->setPage($this);
+        if (!$this->articleContents->contains($articleContent)) {
+            $this->articleContents[] = $articleContent;
+            $articleContent->setArticle($this);
         }
 
         return $this;
     }
 
-    public function removePageContent(ArticleContent $pageContent): self
+    public function removeArticleContent(ArticleContent $articleContent): self
     {
-        if ($this->pageContents->removeElement($pageContent)) {
+        if ($this->articleContents->removeElement($articleContent)) {
             // set the owning side to null (unless already changed)
-            if ($pageContent->getPage() === $this) {
-                $pageContent->setPage(null);
+            if ($articleContent->getArticle() === $this) {
+                $articleContent->setArticle(null);
             }
         }
 

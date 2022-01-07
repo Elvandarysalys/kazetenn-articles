@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Kazetenn Pages Bundle
+ * This file is part of the Kazetenn Articles Bundle
  *
  * (c) Gwilherm-Alan Turpin (elvandar.ysalys@protonmail.com) 2022.
  *
@@ -28,35 +28,35 @@ class ArticleRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string|null $page_path_1
-     * @param string|null $page_path_2
+     * @param string|null $article_path_1
+     * @param string|null $article_path_2
      * @return int|mixed|string|null
      * @throws Exception
      */
-    public function findPage(?string $page_path_1, ?string $page_path_2)
+    public function findPage(?string $article_path_1, ?string $article_path_2)
     {
-        if (null === $page_path_1 && null === $page_path_2) {
+        if (null === $article_path_1 && null === $article_path_2) {
             return null;
         }
-        if (null === $page_path_1 && null !== $page_path_2) {
+        if (null === $article_path_1 && null !== $article_path_2) {
             throw new Exception('if the second argument is not null, the first argument cannot be null');
         }
 
         $qb = $this->createQueryBuilder('p');
 
-        if ($page_path_2 !== null) {
-            $qb->where('p.slug = :pageSlug')->setParameter('pageSlug', $page_path_2);
+        if ($article_path_2 !== null) {
+            $qb->where('p.slug = :articleSlug')->setParameter('articleSlug', $article_path_2);
 //            $qb
 //                ->leftJoin('p.parent', 'parent')
 //               ->where('parent.slug = :parentSlug')
 ////               ->where('p.parent.slug = :parentSlug')
 //               ->andWhere('parent.slug = :pageSlug')
 //               ->setParameters([
-//                   'parentSlug' => $page_path_1,
-//                   'pageSlug'   => $page_path_2
+//                   'parentSlug' => $article_path_1,
+//                   'pageSlug'   => $article_path_2
 //               ]);
         } else {
-            $qb->where('p.slug = :pageSlug')->setParameter('pageSlug', $page_path_1);
+            $qb->where('p.slug = :articleSlug')->setParameter('articleSlug', $article_path_1);
         }
 
         $results = $qb->getQuery()->getOneOrNullResult();

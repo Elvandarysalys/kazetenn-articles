@@ -2,7 +2,7 @@
   "name": "elvandar/kazetennarticles",
   "type": "symfony-bundle",
   "license": "MIT",
-  "description": "A page handling bundle for symfony. Part of the Kazetenn suite",
+  "description": "A article handling bundle for symfony. Part of the Kazetenn suite",
   "authors": [
     {
       "name": "Elvandar Ysalys",

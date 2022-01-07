@@ -1,18 +1,17 @@
 <?php
 /*
- * This file is part of the Kazetenn Pages Bundle
+ * This file is part of the Kazetenn Articles Bundle
  *
  * (c) Gwilherm-Alan Turpin (elvandar.ysalys@protonmail.com) 2022.
  *
  * For more informations about the license and copyright, please view the LICENSE file at the root of the project.
  */
 
-namespace Kazetenn\Pages\Entity;
+namespace Kazetenn\Articles\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Kazetenn\Articles\Entity\Article;
 use Kazetenn\Articles\Repository\ArticleContentRepository;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Uid\UuidV4;
@@ -37,21 +36,21 @@ class ArticleContent
 
     /**
      * @var Article|null
-     * @ORM\ManyToOne(targetEntity="Kazetenn\Entity\Article", inversedBy="pageContents")
-     * @ORM\JoinColumn(name="page_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Kazetenn\Articles\Entity\Article", inversedBy="articleContents")
+     * @ORM\JoinColumn(name="article_", referencedColumnName="id")
      */
-    private ?Article $page;
+    private ?Article $article;
 
     /**
      * @var ArticleContent|null
-     * @ORM\ManyToOne(targetEntity="Kazetenn\Entity\ArticleContent", inversedBy="childrens")
+     * @ORM\ManyToOne(targetEntity="Kazetenn\Articles\Entity\ArticleContent", inversedBy="childrens")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     private ?ArticleContent $parent;
 
     /**
      * @var ArticleContent[]|null
-     * @ORM\OneToMany(targetEntity="Kazetenn\Entity\ArticleContent", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="Kazetenn\Articles\Entity\ArticleContent", mappedBy="parent")
      * @ORM\JoinColumn(name="children_id", referencedColumnName="id")
      */
     private $childrens;
@@ -92,21 +91,21 @@ class ArticleContent
         $this->childrens = new ArrayCollection();
     }
 
-    public function addChildren(ArticleContent $pageContent): self
+    public function addChildren(ArticleContent $articleContent): self
     {
-        if (!$this->childrens->contains($pageContent)) {
-            $this->childrens[] = $pageContent;
-            $pageContent->setParent($this);
+        if (!$this->childrens->contains($articleContent)) {
+            $this->childrens[] = $articleContent;
+            $articleContent->setParent($this);
         }
 
         return $this;
     }
 
-    public function removeChildren(ArticleContent $pageContent): self
+    public function removeChildren(ArticleContent $articleContent): self
     {
-        if ($this->childrens->removeElement($pageContent)) {
-            if ($pageContent->getPage() === $this) {
-                $pageContent->setParent(null);
+        if ($this->childrens->removeElement($articleContent)) {
+            if ($articleContent->getArticle() === $this) {
+                $articleContent->setParent(null);
             }
         }
 
@@ -127,22 +126,6 @@ class ArticleContent
     public function setId($id): void
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return Article|null
-     */
-    public function getPage(): ?Article
-    {
-        return $this->page;
-    }
-
-    /**
-     * @param Article $page
-     */
-    public function setPage(Article $page): void
-    {
-        $this->page = $page;
     }
 
     /**
@@ -254,5 +237,21 @@ class ArticleContent
     public function setChildrens(?ArticleContent $childrens): void
     {
         $this->childrens = $childrens;
+    }
+
+    /**
+     * @return Article|null
+     */
+    public function getArticle(): ?Article
+    {
+        return $this->article;
+    }
+
+    /**
+     * @param Article|null $article
+     */
+    public function setArticle(?Article $article): void
+    {
+        $this->article = $article;
     }
 }

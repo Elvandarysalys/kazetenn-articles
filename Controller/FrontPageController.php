@@ -19,20 +19,20 @@ use Symfony\Component\Routing\Annotation\Route;
 class FrontPageController extends AbstractController
 {
     /**
-     * @Route("/{page_path_1}/{page_path_2}", name="front_index", methods={"GET"})
+     * @Route("/{article_path_1}/{article_path_2}", name="front_index", methods={"GET"})
      * @throws Exception
      */
-    public function index(ArticleRepository $pageRepository, string $page_path_1 = null, string $page_path_2 = null): Response
+    public function index(ArticleRepository $articleRepository, string $article_path_1 = null, string $article_path_2 = null): Response
     {
-        /** @var Article|null $page */
-        $page = $pageRepository->findPage($page_path_1, $page_path_2);
+        /** @var Article|null $article */
+        $article = $articleRepository->findPage($article_path_1, $article_path_2);
 
-        if (null === $page) {
+        if (null === $article) {
             return $this->redirectToRoute('not_found');
         }
 
         return $this->render('@KazetennArticles/display_page.html.twig', [
-            'article' => $page,
+            'article' => $article,
         ]);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Kazetenn Pages Bundle
+ * This file is part of the Kazetenn Articles Bundle
  *
  * (c) Gwilherm-Alan Turpin (elvandar.ysalys@protonmail.com) 2022.
  *
