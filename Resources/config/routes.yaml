@@ -1,0 +1,9 @@
+front_controller:
+  resource: 'FrontP'
+  type: annotation
+  prefix: '%kazetenn.blog_url%'
+  name_prefix: 'kazetenn_'
+
+error_controllers:
+  resource: '@Kazetenn/Controller/ErrorController.php'
+  type: annotation
