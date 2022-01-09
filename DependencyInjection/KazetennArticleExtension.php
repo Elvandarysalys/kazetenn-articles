@@ -31,7 +31,7 @@ class KazetennArticleExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('kazetenn.blog_url', $config['blog_url']);
+        $container->setParameter('kazetenn_articles.article_url', $config['article_url']);
 
         $this->addAnnotatedClassesToCompile([
             '**\\Controller\\',

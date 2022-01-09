@@ -1,4 +1,4 @@
-{# This block is the display logic bloc for content inside of a article. You SHOULD NOT modify it. #}
+{# This block is the display logic bloc for content inside of a content. You SHOULD NOT modify it. #}
 
 <div class="content_bloc_container" style="order: {{ block.blocOrder }}">
     {% block display_block_main %}
@@ -9,7 +9,7 @@
         {% if block.childrens|length >= 1 %}
             <div style="display:flex; flex-direction: {% if block.align == constant('Kazetenn\\Entity\\ArticleContent::HORIZONTAL_ALIGN') %}row{% else %}column{% endif %}; justify-content: space-evenly">
                 {% for child in block.childrensOrdered %}
-                    {{ include('@KazetennArticles/article/_display_block.html.twig', {block: child}) }}
+                    {{ include('@KazetennArticles/content/_display_block.html.twig', {block: child}) }}
                 {% endfor %}
             </div>
         {% endif %}

@@ -11,7 +11,7 @@
         {% endblock %}
 
         {% for order, data in article.articleContentsOrdered %}
-            {{ include('@KazetennArticles/article/_display_block.html.twig', {block: data.0}) }}
+            {{ include('@KazetennArticles/content/_display_block.html.twig', {block: data.0}) }}
         {% endfor %}
     </div>
 {% endblock %}

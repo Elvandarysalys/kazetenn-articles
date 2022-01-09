@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FrontPageController extends AbstractController
+class ArticlesController extends AbstractController
 {
     /**
      * @Route("/{article_path_1}/{article_path_2}", name="front_index", methods={"GET"})
@@ -32,7 +32,15 @@ class FrontPageController extends AbstractController
         }
 
         return $this->render('@KazetennArticles/display_page.html.twig', [
-            'article' => $article,
+            'content' => $article,
         ]);
+    }
+
+    /**
+     * @Route("/404", name="not_found", methods={"GET"}, priority="1")
+     */
+    public function notFound(): Response
+    {
+        return $this->render('@KazetennArticles/not_found.html.twig');
     }
 }

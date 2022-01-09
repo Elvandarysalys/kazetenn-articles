@@ -16,11 +16,11 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('kazetenn');
+        $treeBuilder = new TreeBuilder('kazetenn_articles');
         $treeBuilder->getRootNode()
                     ->children()
-                        ->scalarNode('blog_article_url')
-                            ->defaultValue('')
+                        ->scalarNode('article_url')
+                            ->defaultValue('content')
                         ->end()
                     ->end();
 

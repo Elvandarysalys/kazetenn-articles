@@ -1,7 +1,9 @@
-{% extends '@KazetennArticles/base.html.twig' %}
+{% extends '@KazetennArticles/blog_article_base.html.twig' %}
 
-{% block title %}Article index{% endblock %}
+{% block title %}
+    {% trans %}kazetenn.articles.not_found.title{% endtrans %}
+{% endblock %}
 
 {% block body %}
-    <h1>Article index</h1>
+    <h1>{% trans %}kazetenn.articles.not_found.text{% endtrans %}</h1>
 {% endblock %}

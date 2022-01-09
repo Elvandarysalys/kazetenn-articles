@@ -16,13 +16,14 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Kazetenn\Articles\Repository\ArticleRepository;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Uid\UuidV4;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
  */
 class Article
 {
-    const ARTICLE_TEMPLATE = '@Kazetenn/article/_block_content_display.twig'; // todo: do something about this
+    const ARTICLE_TEMPLATE = '@KazetennArticles/content/_block_content_display.twig'; // todo: do something about this
 
     use TimestampableEntity;
 
@@ -35,19 +36,6 @@ class Article
     private ?UuidV4 $id;
 
     /**
-     * @var Article[]
-     * @ORM\OneToMany(targetEntity="Kazetenn\Articles\Entity\Article", mappedBy="parent")
-     */
-    private $children;
-
-    /**
-     * @var Article|null
-     * @ORM\ManyToOne(targetEntity="Kazetenn\Articles\Entity\Article", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
-     */
-    private Article $parent;
-
-    /**
      * @var string
      * @ORM\Column(type="string", length=255)
      */
@@ -56,6 +44,7 @@ class Article
     /**
      * @var string
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Unique()
      */
     private string $slug;
 
@@ -81,7 +70,6 @@ class Article
 
     public function __construct()
     {
-        $this->children        = new ArrayCollection();
         $this->articleContents = new ArrayCollection();
         $this->categories      = new ArrayCollection();
 
@@ -154,38 +142,6 @@ class Article
     public function setId($id): void
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return ArrayCollection|Article[]
-     */
-    public function getChildren()
-    {
-        return $this->children;
-    }
-
-    /**
-     * @param mixed $children
-     */
-    public function setChildren($children): void
-    {
-        $this->children = $children;
-    }
-
-    /**
-     * @return Article|null
-     */
-    public function getParent(): ?Article
-    {
-        return $this->parent;
-    }
-
-    /**
-     * @param Article|null $parent
-     */
-    public function setParent(?Article $parent): void
-    {
-        $this->parent = $parent;
     }
 
     /**
